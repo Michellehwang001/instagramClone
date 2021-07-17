@@ -21,7 +21,7 @@ class _TabPageState extends State<TabPage> {
       appBar: AppBar(
         title: Text('Clone Insta'),
       ),
-      body: _pages[_selectedIndex],
+      body: Center(child: _pages[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTaped,
