@@ -57,6 +57,7 @@ class _CreatePageState extends State<CreatePage> {
     setState(() {
       // XFile 을 File 로~
       _image = File(image!.path);
+      // _image = image as File; // failed
       print('_image 값들어옴');
     });
   }
