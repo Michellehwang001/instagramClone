@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -9,6 +12,8 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   final textEditingController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
 
   @override
   void dispose() {
@@ -28,7 +33,9 @@ class _CreatePageState extends State<CreatePage> {
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_a_photo),
-        onPressed: () {},
+        onPressed: () {
+          _getImage();
+        },
       ),
     );
   }
@@ -36,12 +43,21 @@ class _CreatePageState extends State<CreatePage> {
   Widget _buildBody() {
     return Column(
       children: [
-        Text('No Image'),
+        _image == null ? Text('No Image') : Image.file(_image!),
         TextField(
           decoration: InputDecoration(hintText: '내용을 입력하세요.'),
           controller: textEditingController,
         ),
       ],
     );
+  }
+
+  Future<void> _getImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      // XFile 을 File 로~
+      _image = File(image!.path);
+      print('_image 값들어옴');
+    });
   }
 }
