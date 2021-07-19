@@ -1,26 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
-class AccountPage extends StatefulWidget {
+class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState();
-}
-
-class _AccountPageState extends State<AccountPage> {
-  @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app)),
-        ],
-      ),
-      body: _buildBody(),
+      body: _buildBody(user!),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(User user) {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Row(
@@ -32,9 +27,8 @@ class _AccountPageState extends State<AccountPage> {
               Stack(
                 children: [
                   CircleAvatar(
-                    maxRadius: 70.0,
-                    backgroundImage: NetworkImage(
-                        'https://lh3.googleusercontent.com/proxy/ZVoc4m6hYeSfW0T_nSHPkCNfe5EnMYU5PiGS3JqX0crAym6mcJ1F6B6Y5mVRAEVRTe3zQvf0m6-p1UqpLcT4Q6GpzqobsqZAhizqOUzr3ssVMhjGwDEvH8mMlsB2AY5YGNedjOfXp3BpnA'),
+                    radius: 40,
+                    backgroundImage: NetworkImage(user.photoURL!),
                   ),
                   Container(
                     width: 130.0,
@@ -64,7 +58,7 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
               Text(
-                '이름',
+                '${user.displayName}',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
