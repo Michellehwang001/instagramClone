@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/provider/google_sign_in.dart';
-import 'package:instagram_clone/root_page.dart';
+import 'package:instagram_clone/page/root_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/account_page.dart';
-import 'package:instagram_clone/home_page.dart';
+import 'package:instagram_clone/page/account_page.dart';
+import 'package:instagram_clone/page/home_page.dart';
 import 'package:instagram_clone/provider/google_sign_in.dart';
-import 'package:instagram_clone/search_page.dart';
+import 'package:instagram_clone/page/search_page.dart';
 import 'package:provider/provider.dart';
 
 class TabPage extends StatefulWidget {
