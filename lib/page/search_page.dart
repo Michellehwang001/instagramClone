@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/page/create_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -19,33 +20,45 @@ class _SearchPageState extends State<SearchPage> {
         child: Icon(Icons.create),
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreatePage()),
-            );
+            context,
+            MaterialPageRoute(builder: (context) => CreatePage()),
+          );
         },
       ),
     );
   }
 
   Widget _buildBody() {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          // 열의 개수
-          crossAxisCount: 3,
-          // 가로 세로 비율 1.0 정사각형 1:1 비율
-          childAspectRatio: 1.0,
-          mainAxisSpacing: 1.0,
-          crossAxisSpacing: 1.0,
-        ),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return _buildListItems(context, index);
-        });
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('post').snapshots(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: Text('데이터를 가져오는 중입니다.'),);
+        }
+
+        var items = snapshot.data?.docs ?? [];
+
+        return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              // 열의 개수
+              crossAxisCount: 3,
+              // 가로 세로 비율 1.0 정사각형 1:1 비율
+              childAspectRatio: 1.0,
+              mainAxisSpacing: 1.0,
+              crossAxisSpacing: 1.0,
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return _buildListItems(context, items[index]);
+            });
+      },
+    );
   }
 
-  Widget _buildListItems(BuildContext context, int index) {
+  Widget _buildListItems(context, document) {
     return Image.network(
-      'http://www.nbnnews.co.kr/news/photo/202010/431596_475596_185.jpg',
+      document['photoUrl'],
       fit: BoxFit.cover,
     );
   }
