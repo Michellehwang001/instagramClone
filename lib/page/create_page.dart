@@ -1,7 +1,9 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -27,7 +29,9 @@ class _CreatePageState extends State<CreatePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.send)),
+          IconButton(onPressed: () {
+            _uploadPost(context);
+          }, icon: Icon(Icons.send)),
         ],
       ),
       body: _buildBody(),
@@ -38,6 +42,39 @@ class _CreatePageState extends State<CreatePage> {
         },
       ),
     );
+  }
+
+  // 파일 storage에 업로드 & firestore 저장
+  Future<void> _uploadPost(BuildContext context) async {
+     final user = FirebaseAuth.instance.currentUser;
+    //var user = context.read<GoogleSignInProvider>();
+
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('post')
+        .child('${DateTime.now().millisecondsSinceEpoch}.png');
+
+    final task = await firebaseStorageRef.putFile(
+        _image!, SettableMetadata(contentType: 'image/png'));
+
+    // downloadUrl 을 얻음
+    final uri = await task.ref.getDownloadURL();
+
+    // Data Write . post collection 은 만들어진다.
+    final doc = FirebaseFirestore.instance.collection('post').doc();
+    // json Map 형태로 넣는다.
+    await doc.set({
+      // Id 정보를 알수있다.
+      'id': doc.id,
+      'photoUrl': uri.toString(),
+      'contents': textEditingController.text,
+      'email': user!.email,
+      'displayName': user.displayName,
+      'userPhotoUrl': user.photoURL
+    }).then((value) => print('Success ---- Add Post'));
+
+    // 완료 후 앞 화면으로 이동
+    Navigator.pop(context);
   }
 
   Widget _buildBody() {
@@ -52,13 +89,13 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
+  // 갤러리이미지 ImagePicker
   Future<void> _getImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
       // XFile 을 File 로~
       _image = File(image!.path);
       // _image = image as File; // failed
-      print('_image 값들어옴');
     });
   }
 }

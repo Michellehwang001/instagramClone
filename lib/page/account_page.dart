@@ -2,18 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  AccountPage({Key? key}) : super(key: key);
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      body: _buildBody(user!),
+      body: _buildBody(),
     );
   }
 
-  Widget _buildBody(User user) {
+  Widget _buildBody() {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Row(
@@ -26,11 +26,11 @@ class AccountPage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 40,
-                    backgroundImage: NetworkImage(user.photoURL!),
+                    backgroundImage: NetworkImage('${user!.photoURL}'),
                   ),
                   Container(
-                    width: 130.0,
-                    height: 130.0,
+                    width: 90.0,
+                    height: 90.0,
                     alignment: Alignment.bottomRight,
                     child: Stack(
                       alignment: Alignment.center,
@@ -56,7 +56,7 @@ class AccountPage extends StatelessWidget {
                 ],
               ),
               Text(
-                '${user.displayName}',
+                '${user!.displayName}',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
