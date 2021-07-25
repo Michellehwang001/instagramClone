@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/page/create_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram_clone/page/detail_post_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
@@ -57,9 +57,22 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildListItems(context, document) {
-    return Image.network(
-      document['photoUrl'],
-      fit: BoxFit.cover,
+    return Hero(
+      tag: document['photoUrl'],
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DetailPostPage(document: document,)),
+              );
+          },
+          child: Image.network(
+            document['photoUrl'],
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }
