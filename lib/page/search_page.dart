@@ -34,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: Text('데이터를 가져오는 중입니다.'),);
+          return Center(child: CircularProgressIndicator(),);
         }
 
         var items = snapshot.data?.docs ?? [];

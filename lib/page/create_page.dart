@@ -62,6 +62,7 @@ class _CreatePageState extends State<CreatePage> {
 
     // Data Write . post collection 은 만들어진다.
     final doc = FirebaseFirestore.instance.collection('post').doc();
+
     // json Map 형태로 넣는다.
     await doc.set({
       // Id 정보를 알수있다.
