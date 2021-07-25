@@ -1,9 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   AccountPage({Key? key}) : super(key: key);
+
+  @override
+  _AccountPageState createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   final user = FirebaseAuth.instance.currentUser;
+  int _pageCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // 단발성 한번만 읽어 오기
+    FirebaseFirestore.instance.collection('post').where('email', isEqualTo: user!.email).get().then((snapshot) {
+      setState(() {
+        _pageCount = snapshot.docs.length;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +82,7 @@ class AccountPage extends StatelessWidget {
             ],
           ),
           Text(
-            '0\n게시물',
+            '$_pageCount\n게시물',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18),
           ),

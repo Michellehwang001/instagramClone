@@ -29,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildBody() {
+    // StreamBuilder는 계속해서 데이터베이스를 읽는다. 이는 추후 비용으로 환산된다.
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('post').snapshots(),
       builder: (BuildContext context,
