@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:instagram_clone/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Instagram Clone',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              style: GoogleFonts.pacifico(fontSize: 40.0),
+              //style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 40.0,

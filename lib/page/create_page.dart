@@ -94,9 +94,13 @@ class _CreatePageState extends State<CreatePage> {
   Future<void> _getImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      // XFile 을 File 로~
-      _image = File(image!.path);
-      // _image = image as File; // failed
+      if(image != null) {
+        // XFile 을 File 로~
+        _image = File(image.path);
+        // _image = image as File; // failed
+      } else {
+        print('error : 파일을 가져오지 못했습니다. ');
+      }
     });
   }
 }

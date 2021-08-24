@@ -38,6 +38,9 @@ dependencies:
   # Google Icon
   font_awesome_flutter: ^9.1.0
 
+  # Google Font
+  google_fonts: ^2.1.0
+
   # 상태관리
   provider: ^5.0.0
 
