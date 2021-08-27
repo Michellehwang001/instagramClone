@@ -32,9 +32,11 @@ class _SearchPageState extends State<SearchPage> {
     // StreamBuilder는 계속해서 데이터베이스를 읽는다. 이는 추후 비용으로 환산된다.
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('post').snapshots(),
+      // stream: FirebaseFirestore.instance.collection('post').where('id', isEqualTo: 'ASV84lrphPItSWoPV6Oe').snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (!snapshot.hasData) {
+          print('snapshot Data 가 없습니다.');
           return Center(child: CircularProgressIndicator(),);
         }
 
